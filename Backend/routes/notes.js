@@ -113,10 +113,10 @@ router.delete("/deletenote/:id", userDetail, async (req, res) => {
 
   // check whether the login user delete there note
   if (deleteNote.user.toString() !== req.user.id) {
-    return res.status(401).send("Please delete your note!");
+    return res.status(401).send("Please delete your's note!");
   }
 
   deleteNote = await Notes.findByIdAndDelete(req.params.id);
-  res.send({ note: "Delete your note successfully" });
+  res.send({ note: "Your note deleted successfully" });
 });
 module.exports = router;
