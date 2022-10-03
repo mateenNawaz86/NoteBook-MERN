@@ -17,10 +17,23 @@ router.get("/fetchallnotes", userDetail, async (req, res) => {
   }
 });
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/images");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + "_" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
 // Route 2: create note for user using : 'POST' /api/notes/addnote, Login required
 router.post(
   "/addnote",
   userDetail,
+  upload.single("profile"),
   [
     body("title", "Please enter title must be atleast 5 characters").isLength({
       min: 5,
@@ -33,7 +46,10 @@ router.post(
 
   async (req, res) => {
     try {
-      const { title, description, tag, img } = req.body;
+      const { title, description, tag, profile } = req.body;
+
+      // check if file exist then return file otherwise null
+      profile = req.file ? req.file.filename : null;
 
       // if there are error, send bad request with an error
       const errors = validationResult(req);
@@ -46,19 +62,8 @@ router.post(
         title,
         description,
         tag,
-        img,
+        profile,
         user: req.user.id,
-      });
-
-      const storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-          cb(null, "/tmp/my-uploads");
-        },
-        filename: function (req, file, cb) {
-          const uniqueSuffix =
-            Date.now() + "-" + Math.round(Math.random() * 1e9);
-          cb(null, file.fieldname + "-" + uniqueSuffix);
-        },
       });
 
       // save note

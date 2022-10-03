@@ -5,7 +5,7 @@
 }
 
 #main__container {
-  margin: 6rem auto;
+  margin: 1rem auto;
 }
 
 .card__container {
@@ -17,6 +17,12 @@
 .card_img {
   height: 100%;
   width: 100%;
+}
+
+/* Alert Component styling */
+.alert__box {
+  height: 5rem;
+  margin-top: 56px;
 }
 
 @media screen and (max-width: 993px) {

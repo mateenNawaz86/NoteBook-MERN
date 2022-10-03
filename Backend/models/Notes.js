@@ -22,7 +22,7 @@ const NotesSchema = new Schema({
     default: "General",
   },
 
-  img: {
+  profile: {
     type: String,
     required: true,
   },
