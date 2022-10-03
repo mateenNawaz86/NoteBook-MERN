@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = (props) => {
+  const location = useLocation();
+  const [show, setShow] = useState(false);
+
+  const menuShowHandler = () => setShow(!show);
+
   return (
     <>
-      <nav className={`navbar navbar-expand-lg bg-dark navbar-dark`}>
+      <nav className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             Notebook
@@ -19,17 +24,32 @@ const Navbar = (props) => {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon"></span>
+            <i
+              onClick={menuShowHandler}
+              className={show ? "uil uil-times" : "uil uil-bars"}
+            />
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link" aria-current="page" to="/addNote">
+                <Link
+                  className={`nav-link ${
+                    location.pathname === "/addNote" ? "active" : ""
+                  }`}
+                  aria-current="page"
+                  to="/addNote"
+                >
                   Add Note
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" aria-current="page" to="/allNotes">
+                <Link
+                  className={`nav-link ${
+                    location.pathname === "/allNotes" ? "active" : ""
+                  }`}
+                  aria-current="page"
+                  to="/allNotes"
+                >
                   All Notes
                 </Link>
               </li>

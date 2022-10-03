@@ -1,0 +1,31 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#main__container {
+  margin: 6rem auto;
+}
+
+.card__container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.card_img {
+  height: 100%;
+  width: 100%;
+}
+
+@media screen and (max-width: 993px) {
+  .card__container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media screen and (max-width: 768px) {
+  .card__container {
+    grid-template-columns: 1fr;
+  }
+}

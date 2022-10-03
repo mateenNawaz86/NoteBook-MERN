@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 const Notes = require("../models/Notes");
 const userDetail = require("../middleware/userDetail");
 const { body, validationResult } = require("express-validator");
@@ -32,7 +33,7 @@ router.post(
 
   async (req, res) => {
     try {
-      const { title, description, tag } = req.body;
+      const { title, description, tag, img } = req.body;
 
       // if there are error, send bad request with an error
       const errors = validationResult(req);
@@ -45,7 +46,19 @@ router.post(
         title,
         description,
         tag,
+        img,
         user: req.user.id,
+      });
+
+      const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+          cb(null, "/tmp/my-uploads");
+        },
+        filename: function (req, file, cb) {
+          const uniqueSuffix =
+            Date.now() + "-" + Math.round(Math.random() * 1e9);
+          cb(null, file.fieldname + "-" + uniqueSuffix);
+        },
       });
 
       // save note
@@ -61,7 +74,7 @@ router.post(
 // ROUTE 3: Update the existing notes using : 'PUT', '/api/notes/updatenote login required
 router.put("/updatenote/:id", userDetail, async (req, res) => {
   // fetching all details from req.body
-  const { title, description, tag } = req.body;
+  const { title, description, tag, img } = req.body;
 
   // create new empty object for updating note
   const updateNoteObj = {};
@@ -73,6 +86,11 @@ router.put("/updatenote/:id", userDetail, async (req, res) => {
   if (description) {
     updateNoteObj.description = description;
   }
+
+  if (img) {
+    updateNoteObj.img = img;
+  }
+
   if (tag) {
     updateNoteObj.tag = tag;
   }

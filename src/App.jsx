@@ -9,11 +9,13 @@ const App = () => {
   return (
     <NoteState>
       <Navbar />
-      <Routes>
-        <Route exact path="/" element={<AllNotes />} />
-        <Route exact path="/addNote" element={<AddNote />} />
-        <Route exact path="/allNotes" element={<AllNotes />} />
-      </Routes>
+      <div className="container" id="main__container">
+        <Routes>
+          <Route exact path="/" element={<AllNotes />} />
+          <Route exact path="/addNote" element={<AddNote />} />
+          <Route exact path="/allNotes" element={<AllNotes />} />
+        </Routes>
+      </div>
     </NoteState>
   );
 };
