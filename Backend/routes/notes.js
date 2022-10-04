@@ -46,10 +46,10 @@ router.post(
 
   async (req, res) => {
     try {
-      const { title, description, tag, profile } = req.body;
+      let { title, description, tag, profile } = req.body;
 
       // check if file exist then return file otherwise null
-      profile = req.file ? req.file.filename : null;
+      // profile = req.file ? req.file.filename : null;
 
       // if there are error, send bad request with an error
       const errors = validationResult(req);

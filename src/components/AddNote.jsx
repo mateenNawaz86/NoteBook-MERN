@@ -7,7 +7,7 @@ const AddNote = () => {
     description: "",
     profile: "",
     tag: "",
-    id: Math.random() * 100,
+    id: "633a96769f8cc317167e6aea",
   });
 
   // function grab from NoteState
@@ -100,7 +100,7 @@ const AddNote = () => {
           className="btn btn-primary"
           onClick={addNoteHandler}
         >
-          Submit
+          Add Note
         </button>
       </form>
     </>

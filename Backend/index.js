@@ -1,6 +1,7 @@
 // import connection funtion from database.js
 const connectToMongo = require("./dataBase");
 const express = require("express");
+const cors = require("cors");
 
 connectToMongo();
 
@@ -8,6 +9,8 @@ connectToMongo();
 const app = express();
 const port = 5000; // localhost port number is: 5000
 
+// CORS use for hit the API from client seide
+app.use(cors());
 
 // Midleware used for read/write JSON formate data
 app.use(express.json());

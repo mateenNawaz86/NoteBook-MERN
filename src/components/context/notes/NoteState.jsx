@@ -3,69 +3,42 @@ import NoteContext from "./noteContext";
 
 // function
 const NoteState = (props) => {
-  // Notes is here
-  const allNotes = [
-    {
-      _id: "6339394fab8b4a7eb2e1f13e",
-      user: "6338f25209613d5459ff2863",
-      title: "Note updated",
-      description: "Hey, I'm your updated note!",
-      tag: "public",
-      profile:
-        "https://images.pexels.com/photos/428364/pexels-photo-428364.jpeg?auto=compress&cs=tinysrgb&w=600",
-      date: "2022-10-02T07:10:07.611Z",
-      __v: 0,
-    },
-    {
-      _id: "633939f2ab8b4a7eb2e1f143",
-      user: "6338f25209613d5459ff2863",
-      title: "Note updated 1.1",
-      description: "Hey, I'm your updated note!",
-      tag: "update",
-      profile:
-        "https://images.pexels.com/photos/2726046/pexels-photo-2726046.jpeg?auto=compress&cs=tinysrgb&w=600",
-      date: "2022-10-02T07:12:50.225Z",
-      __v: 0,
-    },
-    {
-      _id: "633939f2ab8b4a7eb2e1f143",
-      user: "6338f25209613d5459ff2863",
-      title: "Note updated 1.1",
-      description: "Hey, I'm your updated note!",
-      tag: "update",
-      profile:
-        "https://images.pexels.com/photos/2726046/pexels-photo-2726046.jpeg?auto=compress&cs=tinysrgb&w=600",
-      date: "2022-10-02T07:12:50.225Z",
-      __v: 0,
-    },
-    {
-      _id: "633939f2ab8b4a7eb2e1f143",
-      user: "6338f25209613d5459ff2863",
-      title: "Note updated 1.1",
-      description: "Hey, I'm your updated note!",
-      tag: "update",
-      profile:
-        "https://images.pexels.com/photos/2726046/pexels-photo-2726046.jpeg?auto=compress&cs=tinysrgb&w=600",
-      date: "2022-10-02T07:12:50.225Z",
-      __v: 0,
-    },
-    {
-      _id: "633939f2ab8b4a7eb2e1f143",
-      user: "6338f25209613d5459ff2863",
-      title: "Note updated 1.1",
-      description: "Hey, I'm your updated note!",
-      tag: "update",
-      profile:
-        "https://images.pexels.com/photos/2726046/pexels-photo-2726046.jpeg?auto=compress&cs=tinysrgb&w=600",
-      date: "2022-10-02T07:12:50.225Z",
-      __v: 0,
-    },
-  ];
+  // variable for API Call
+  const host = "http://localhost:5000";
 
+  // Notes is here
+  const allNotes = [];
   const [notes, setNotes] = useState(allNotes);
 
+  // function for grab all notes from DB
+  const getAllNotes = async () => {
+    // API call
+    const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYTk1NmUyOWZkZDVkMDBlZGE5NTVkIn0sImlhdCI6MTY2NDc4Mzc1OH0.s7Q92FWTGzIHhcZh_8sPdKn7vbAFxEIkQwYoE1k8DvQ",
+      },
+    });
+    const json = await response.json();
+    setNotes(json);
+  };
+
   // Function for add a new note
-  const addNote = (title, description, tag, profile, id) => {
+  const addNote = async (title, description, tag, profile, id) => {
+    // API call
+    const response = await fetch(`${host}/api/notes/addnote/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYTk1NmUyOWZkZDVkMDBlZGE5NTVkIn0sImlhdCI6MTY2NDc4Mzc1OH0.s7Q92FWTGzIHhcZh_8sPdKn7vbAFxEIkQwYoE1k8DvQ",
+      },
+      body: JSON.stringify({ title, description, tag, profile }),
+    });
+
+    const jsonResponse = response.json();
     const noteCopy = {
       _id: id,
       user: "6338f25209613d5459ff2863",
@@ -82,8 +55,18 @@ const NoteState = (props) => {
   };
 
   // Function for Delete existing note
-  const deleteNote = (id) => {
-    console.log("Your note is delete with this id: " + id);
+  const deleteNote = async (id) => {
+    // API call
+    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYTk1NmUyOWZkZDVkMDBlZGE5NTVkIn0sImlhdCI6MTY2NDc4Mzc1OH0.s7Q92FWTGzIHhcZh_8sPdKn7vbAFxEIkQwYoE1k8DvQ",
+      },
+    });
+
+    // logic for frontend deleteNote
     setNotes(
       notes.filter((item) => {
         return item._id !== id;
@@ -92,7 +75,21 @@ const NoteState = (props) => {
   };
 
   // Function for Edit a existing note
-  const editNote = (id, title, description, profile) => {
+  const editNote = async (id, title, description, tag, profile) => {
+    // API call
+    const response = await fetch(`${host}/api/notes/updatenote${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYTk1NmUyOWZkZDVkMDBlZGE5NTVkIn0sImlhdCI6MTY2NDc4Mzc1OH0.s7Q92FWTGzIHhcZh_8sPdKn7vbAFxEIkQwYoE1k8DvQ",
+      },
+      body: JSON.stringify({ title, description, tag, profile, id }),
+    });
+
+    const jsonResponse = response.json();
+
+    // logic for edit the existing notes
     for (let index = 0; index < notes.length; index++) {
       const element = notes[index];
       if (element._id === id) {
@@ -104,7 +101,7 @@ const NoteState = (props) => {
   };
   return (
     <NoteContext.Provider
-      value={{ notes, setNotes, addNote, deleteNote, editNote }}
+      value={{ notes, setNotes, addNote, deleteNote, editNote, getAllNotes }}
     >
       {props.children}
     </NoteContext.Provider>

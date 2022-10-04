@@ -25,6 +25,13 @@
   margin-top: 56px;
 }
 
+#no_notes {
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: cadetblue;
+}
+
 @media screen and (max-width: 993px) {
   .card__container {
     grid-template-columns: 1fr 1fr;
