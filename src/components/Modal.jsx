@@ -1,49 +1,27 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import NoteContext from "./context/notes/noteContext";
-import NoteItem from "./NoteItem";
+import React, {useState} from "react";
 
-const AllNotes = () => {
-  const context = useContext(NoteContext);
-  const { notes, getAllNotes } = context;
-  const ref = useRef(null);
-
-  // Function for loading notes from DB
-  useEffect(() => {
-    getAllNotes();
-    // eslint-disable-next-line
-  }, []);
-
+const Modal = (props) => {
   const [enteredNote, setEnteredNote] = useState({
-    etitle: "",
-    edescription: "",
-    etag: "",
+    title: "",
+    description: "",
+    tag: "",
+    id: "",
   });
-
-  // Function for update Note
-  const updateNote = (curNote) => {
-    ref.current.click();
-    setEnteredNote({
-      etitle: curNote.title,
-      edescription: curNote.description,
-      etag: curNote.tag,
-    });
-  };
+  const { refVal } = props;
 
   // Function for handling inputs
   const onChangeHandler = (event) => {
     setEnteredNote({ ...enteredNote, [event.target.name]: event.target.value });
   };
-
   return (
     <>
-      {/* Modal code start */}
       <button
         type="button"
         className="btn btn-primary d-none"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
         data-bs-whatever="@mdo"
-        ref={ref}
+        ref={refVal}
       >
         Open modal for @mdo
       </button>
@@ -78,7 +56,6 @@ const AllNotes = () => {
                     className="form-control"
                     id="etitle"
                     name="etitle"
-                    value={enteredNote.etitle}
                     onChange={onChangeHandler}
                   />
                 </div>
@@ -90,7 +67,6 @@ const AllNotes = () => {
                     className="form-control"
                     id="edescription"
                     name="edescription"
-                    value={enteredNote.edescription}
                     onChange={onChangeHandler}
                   ></textarea>
                 </div>
@@ -103,7 +79,6 @@ const AllNotes = () => {
                     className="form-control"
                     id="etage"
                     name="etage"
-                    value={enteredNote.etag}
                     onChange={onChangeHandler}
                   />
                 </div>
@@ -124,30 +99,8 @@ const AllNotes = () => {
           </div>
         </div>
       </div>
-      {/* Modal code end */}
-
-      <h2 className="text-center text-primary mb-5">Your Notes</h2>
-      <div className="card__container">
-        {notes.length !== 0 ? (
-          notes.map((item, index) => {
-            return (
-              <NoteItem
-                key={index}
-                note={item}
-                title={item.title}
-                description={item.description}
-                tag={item.tag}
-                id={item._id}
-                updateNote={updateNote}
-              />
-            );
-          })
-        ) : (
-          <p id="no_notes">NO NOTES FOUND!</p>
-        )}
-      </div>
     </>
   );
 };
 
-export default AllNotes;
+export default Modal;

@@ -5,9 +5,8 @@ const AddNote = () => {
   const [enteredNote, setEnteredNote] = useState({
     title: "",
     description: "",
-    profile: "",
     tag: "",
-    id: "633a96769f8cc317167e6aea",
+    id: "",
   });
 
   // function grab from NoteState
@@ -20,7 +19,6 @@ const AddNote = () => {
     addNote(
       enteredNote.title,
       enteredNote.description,
-      enteredNote.profile,
       enteredNote.tag,
       enteredNote.id
     );
@@ -35,7 +33,7 @@ const AddNote = () => {
   return (
     <>
       <h1 className="text-center text-success mb-3">Add a new note</h1>
-      <form>
+      <form method="POST" encType="multipart/form-data">
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
             Title
@@ -62,7 +60,7 @@ const AddNote = () => {
             rows="5"
             name="description"
             onChange={onChangeHandler}
-          ></textarea>
+          />
           <div id="title" className="form-text">
             Description must be atleast 8 characters
           </div>
@@ -81,20 +79,6 @@ const AddNote = () => {
             onChange={onChangeHandler}
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="profile" className="form-label">
-            Upload Profile
-          </label>
-          <input
-            type="file"
-            className="form-control"
-            id="profile"
-            name="profile"
-            aria-describedby="profile"
-            onChange={onChangeHandler}
-          />
-        </div>
-
         <button
           type="submit"
           className="btn btn-primary"

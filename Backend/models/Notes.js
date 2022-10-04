@@ -21,12 +21,6 @@ const NotesSchema = new Schema({
     type: String,
     default: "General",
   },
-
-  profile: {
-    type: String,
-    required: true,
-  },
-
   date: {
     type: Date,
     default: Date.now,

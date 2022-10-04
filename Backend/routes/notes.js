@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
 const Notes = require("../models/Notes");
 const userDetail = require("../middleware/userDetail");
 const { body, validationResult } = require("express-validator");
@@ -17,23 +16,11 @@ router.get("/fetchallnotes", userDetail, async (req, res) => {
   }
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/images");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + "_" + file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
 
 // Route 2: create note for user using : 'POST' /api/notes/addnote, Login required
 router.post(
   "/addnote",
   userDetail,
-  upload.single("profile"),
   [
     body("title", "Please enter title must be atleast 5 characters").isLength({
       min: 5,
@@ -46,7 +33,7 @@ router.post(
 
   async (req, res) => {
     try {
-      let { title, description, tag, profile } = req.body;
+      let { title, description, tag } = req.body;
 
       // check if file exist then return file otherwise null
       // profile = req.file ? req.file.filename : null;
@@ -62,7 +49,6 @@ router.post(
         title,
         description,
         tag,
-        profile,
         user: req.user.id,
       });
 
@@ -79,7 +65,7 @@ router.post(
 // ROUTE 3: Update the existing notes using : 'PUT', '/api/notes/updatenote login required
 router.put("/updatenote/:id", userDetail, async (req, res) => {
   // fetching all details from req.body
-  const { title, description, tag, img } = req.body;
+  const { title, description, tag } = req.body;
 
   // create new empty object for updating note
   const updateNoteObj = {};
@@ -90,10 +76,6 @@ router.put("/updatenote/:id", userDetail, async (req, res) => {
   }
   if (description) {
     updateNoteObj.description = description;
-  }
-
-  if (img) {
-    updateNoteObj.img = img;
   }
 
   if (tag) {
