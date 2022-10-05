@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import NoteContext from "./context/notes/noteContext";
 import NoteItem from "./NoteItem";
+import Spinner from "./Spinner";
 
 const AllNotes = () => {
   const context = useContext(NoteContext);
-  const { notes, getAllNotes } = context;
+  const { notes, getAllNotes, editNote, loading } = context;
   const ref = useRef(null);
+  const refClose = useRef(null);
 
   // Function for loading notes from DB
   useEffect(() => {
@@ -14,24 +16,38 @@ const AllNotes = () => {
   }, []);
 
   const [enteredNote, setEnteredNote] = useState({
+    id: "",
     etitle: "",
     edescription: "",
     etag: "",
   });
 
-  // Function for update Note
+  // Function for handling update states of note
   const updateNote = (curNote) => {
-    ref.current.click();
     setEnteredNote({
+      id: curNote._id,
       etitle: curNote.title,
       edescription: curNote.description,
       etag: curNote.tag,
     });
+    ref.current.click();
   };
 
   // Function for handling inputs
   const onChangeHandler = (event) => {
     setEnteredNote({ ...enteredNote, [event.target.name]: event.target.value });
+  };
+
+  // function for update the note in real time
+  const updateNoteHandler = (event) => {
+    event.preventDefault();
+    refClose.current.click();
+    editNote(
+      enteredNote.id,
+      enteredNote.etitle,
+      enteredNote.edescription,
+      enteredNote.etag
+    );
   };
 
   return (
@@ -80,6 +96,7 @@ const AllNotes = () => {
                     name="etitle"
                     value={enteredNote.etitle}
                     onChange={onChangeHandler}
+                    minLength="3"
                   />
                 </div>
                 <div className="mb-3">
@@ -92,6 +109,7 @@ const AllNotes = () => {
                     name="edescription"
                     value={enteredNote.edescription}
                     onChange={onChangeHandler}
+                    minLength="8"
                   ></textarea>
                 </div>
                 <div className="mb-3">
@@ -114,10 +132,15 @@ const AllNotes = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
+                ref={refClose}
               >
                 Cancel
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={updateNoteHandler}
+              >
                 Update
               </button>
             </div>
@@ -126,25 +149,24 @@ const AllNotes = () => {
       </div>
       {/* Modal code end */}
 
-      <h2 className="text-center text-primary mb-5">Your Notes</h2>
+      <h2 className="text-center text-primary mb-5">ALL OF YOUR NOTES</h2>
+      {loading && <Spinner />}
       <div className="card__container">
-        {notes.length !== 0 ? (
-          notes.map((item, index) => {
-            return (
-              <NoteItem
-                key={index}
-                note={item}
-                title={item.title}
-                description={item.description}
-                tag={item.tag}
-                id={item._id}
-                updateNote={updateNote}
-              />
-            );
-          })
-        ) : (
-          <p id="no_notes">NO NOTES FOUND!</p>
-        )}
+        {notes.length !== 0
+          ? notes.map((item, index) => {
+              return (
+                <NoteItem
+                  key={index}
+                  note={item}
+                  title={item.title}
+                  description={item.description}
+                  tag={item.tag}
+                  id={item._id}
+                  updateNote={updateNote}
+                />
+              );
+            })
+          : !loading && <p id="no_notes">NO NOTES FOUND!</p>}
       </div>
     </>
   );

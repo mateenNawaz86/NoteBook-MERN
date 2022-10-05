@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import NoteContext from "./context/notes/noteContext";
+import Tooltip from "@mui/material/Tooltip";
 
 // Material UI imports
 import Card from "@mui/material/Card";
@@ -10,7 +11,7 @@ import { Button, CardActionArea, CardActions } from "@mui/material";
 const NoteItem = (props) => {
   const context = useContext(NoteContext);
   const { deleteNote } = context;
-  const { id, title, description, tag, updateNote, note } = props;
+  const { id, title, description, updateNote, note } = props;
 
   // // function for delete the note
   const noteDeleteHandler = () => {
@@ -28,24 +29,25 @@ const NoteItem = (props) => {
             <Typography variant="body2" color="text.secondary">
               {description}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {tag}
-            </Typography>
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => {
-              updateNote(note);
-            }}
-          >
-            Edit
-          </Button>
-          <Button size="small" color="primary" onClick={noteDeleteHandler}>
-            Delete
-          </Button>
+          <Tooltip title="Edit">
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => {
+                updateNote(note);
+              }}
+            >
+              Edit
+            </Button>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <Button size="small" color="primary" onClick={noteDeleteHandler}>
+              Delete
+            </Button>
+          </Tooltip>
         </CardActions>
       </Card>
     </>
