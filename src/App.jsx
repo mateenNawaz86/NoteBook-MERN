@@ -4,13 +4,11 @@ import { Routes, Route } from "react-router-dom";
 import AllNotes from "./components/AllNotes";
 import AddNote from "./components/AddNote";
 import NoteState from "./components/context/notes/NoteState";
-import AlertCom from "./components/AlertCom";
 
 const App = () => {
   return (
     <NoteState>
       <Navbar />
-      <AlertCom message="Note is deleted" />
       <div className="container" id="main__container">
         <Routes>
           <Route exact path="/" element={<AllNotes />} />

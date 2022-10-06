@@ -32,7 +32,7 @@ const AddNote = () => {
   };
   return (
     <>
-      <h1 className="text-center text-success mb-3">Add a new note</h1>
+      <h1 className="text-center text-success heading">Add a new note</h1>
       <form method="POST" encType="multipart/form-data">
         <div className="mb-3">
           <label htmlFor="title" className="form-label">

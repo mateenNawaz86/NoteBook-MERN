@@ -10,6 +10,19 @@ const NoteState = (props) => {
   const allNotes = [];
   const [notes, setNotes] = useState(allNotes);
   const [loading, setLoading] = useState(true);
+  const [alert, setAlert] = useState(null);
+
+  // function for alert functionality
+  const showAlertHandler = (message, color) => {
+    setAlert({
+      msg: message,
+      clr: color,
+    });
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 1000);
+  };
 
   // function for grab all notes from DB
   const getAllNotes = async () => {
@@ -60,6 +73,7 @@ const NoteState = (props) => {
 
       // render new note to UI
       setNotes(notes.concat(noteCopy));
+      showAlertHandler("YOUR Note IS ADDED SUCCESSFULLY", "success");
     } catch (error) {
       console.error(error);
       console.log("Some error occured!");
@@ -86,6 +100,7 @@ const NoteState = (props) => {
           return item._id !== id;
         })
       );
+      showAlertHandler("Your note is deleted!", "warning");
     } catch (error) {
       console.error(error);
       console.log("Some error occured!");
@@ -123,6 +138,7 @@ const NoteState = (props) => {
 
       // set previous note into new values
       setNotes(updateValues);
+      showAlertHandler("Your note is updated!", "info");
     } catch (error) {
       console.error(error);
       console.log("Some error occured!");
@@ -138,6 +154,7 @@ const NoteState = (props) => {
         editNote,
         getAllNotes,
         loading,
+        alert,
       }}
     >
       {props.children}

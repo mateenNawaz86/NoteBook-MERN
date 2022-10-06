@@ -5,7 +5,11 @@
 }
 
 #main__container {
-  margin: 1rem auto;
+  margin: 0 auto;
+}
+
+.heading {
+  margin-bottom: 1.5rem;
 }
 
 .card__container {
@@ -20,9 +24,9 @@
 }
 
 /* Alert Component styling */
-.alert__box {
-  height: 5rem;
-  margin-top: 56px;
+#alert__box {
+  margin-top: 55px;
+  height: 60px;
 }
 
 #no_notes {
@@ -40,5 +44,23 @@
 @media screen and (max-width: 768px) {
   .card__container {
     grid-template-columns: 1fr;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+
+  #no_notes {
+    font-size: 1.3rem;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .heading {
+    font-size: 1.1rem;
+  }
+
+  #no_notes {
+    font-size: 15px;
   }
 }

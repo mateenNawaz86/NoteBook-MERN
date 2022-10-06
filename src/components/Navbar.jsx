@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
+import NoteContext from "./context/notes/noteContext";
+import AlertCom from "./AlertCom";
 
 const Navbar = (props) => {
   const location = useLocation();
   const [show, setShow] = useState(false);
-
   const menuShowHandler = () => setShow(!show);
+  const context = useContext(NoteContext);
+  const { alert } = context;
 
   return (
     <>
@@ -61,6 +64,7 @@ const Navbar = (props) => {
           </div>
         </div>
       </nav>
+      <div id="alert__box">{alert && <AlertCom alert={alert} />}</div>
     </>
   );
 };

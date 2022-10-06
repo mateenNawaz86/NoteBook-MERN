@@ -6,11 +6,13 @@ import Stack from "@mui/material/Stack";
 
 const AlertCom = (props) => {
   return (
-    <div className="alert__box">
+    <>
       <Stack sx={{ width: "100%" }} spacing={2}>
-        <Alert severity="error">{props.message}</Alert>
+        <Alert severity={props.alert.clr} color={props.alert.clr}>
+          {props.alert.msg}
+        </Alert>
       </Stack>
-    </div>
+    </>
   );
 };
 

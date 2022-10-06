@@ -113,14 +113,14 @@ const AllNotes = () => {
                   ></textarea>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="etage" className="col-form-label">
+                  <label htmlFor="etag" className="col-form-label">
                     Tag
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="etage"
-                    name="etage"
+                    id="etag"
+                    name="etag"
                     value={enteredNote.etag}
                     onChange={onChangeHandler}
                   />
@@ -149,7 +149,7 @@ const AllNotes = () => {
       </div>
       {/* Modal code end */}
 
-      <h2 className="text-center text-primary mb-5">ALL OF YOUR NOTES</h2>
+      <h2 className="text-center text-primary heading">ALL OF YOUR NOTES</h2>
       {loading && <Spinner />}
       <div className="card__container">
         {notes.length !== 0
