@@ -32,8 +32,7 @@ const NoteState = (props) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYTk1NmUyOWZkZDVkMDBlZGE5NTVkIn0sImlhdCI6MTY2NDc4Mzc1OH0.s7Q92FWTGzIHhcZh_8sPdKn7vbAFxEIkQwYoE1k8DvQ",
+          "auth-token": localStorage.getItem("token"),
         },
       });
       const json = await response.json();
@@ -53,14 +52,12 @@ const NoteState = (props) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYTk1NmUyOWZkZDVkMDBlZGE5NTVkIn0sImlhdCI6MTY2NDc4Mzc1OH0.s7Q92FWTGzIHhcZh_8sPdKn7vbAFxEIkQwYoE1k8DvQ",
+          "auth-token": localStorage.getItem("token"),
         },
         body: JSON.stringify({ title, description, tag }),
       });
 
       const jsonResponse = response.json();
-      console.log(jsonResponse);
       const noteCopy = {
         _id: id,
         user: "6338f25209613d5459ff2863",
@@ -88,11 +85,9 @@ const NoteState = (props) => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYTk1NmUyOWZkZDVkMDBlZGE5NTVkIn0sImlhdCI6MTY2NDc4Mzc1OH0.s7Q92FWTGzIHhcZh_8sPdKn7vbAFxEIkQwYoE1k8DvQ",
+          "auth-token": localStorage.getItem("token"),
         },
       });
-      console.log(response);
 
       // logic for frontend deleteNote
       setNotes(
@@ -115,14 +110,12 @@ const NoteState = (props) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMzYTk1NmUyOWZkZDVkMDBlZGE5NTVkIn0sImlhdCI6MTY2NDc4Mzc1OH0.s7Q92FWTGzIHhcZh_8sPdKn7vbAFxEIkQwYoE1k8DvQ",
+          "auth-token": localStorage.getItem("token"),
         },
         body: JSON.stringify({ title, description, tag, id }),
       });
 
       const jsonResponse = response.json();
-      console.log(jsonResponse);
 
       // logic for edit the existing notes on client-side
       let updateValues = JSON.parse(JSON.stringify(notes));
@@ -155,6 +148,7 @@ const NoteState = (props) => {
         getAllNotes,
         loading,
         alert,
+        showAlertHandler,
       }}
     >
       {props.children}

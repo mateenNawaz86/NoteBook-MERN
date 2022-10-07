@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import NoteContext from "./context/notes/noteContext";
 import AlertCom from "./AlertCom";
 
@@ -11,6 +11,13 @@ const Navbar = (props) => {
   const context = useContext(NoteContext);
   const { alert } = context;
 
+  const navigate = useNavigate();
+
+  // function for logout the current login user
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
@@ -57,10 +64,32 @@ const Navbar = (props) => {
                 </Link>
               </li>
             </ul>
-            <form className="d-flex" role="search">
-              <button className="btn btn-success ">Sign Up</button>
-              <button className="btn btn-primary mx-2">Login</button>
-            </form>
+            {!localStorage.getItem("token") ? (
+              <form className="d-flex" role="search">
+                <Link
+                  to="/login"
+                  className="btn btn-primary mx-1"
+                  role="button"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="btn btn-success mx-1"
+                  role="button"
+                >
+                  Sign Up
+                </Link>
+              </form>
+            ) : (
+              <button
+                onClick={logoutHandler}
+                className="btn btn-primary mx-1"
+                role="button"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </nav>

@@ -22,6 +22,8 @@ const AddNote = () => {
       enteredNote.tag,
       enteredNote.id
     );
+
+    setEnteredNote({ title: "", description: "", tag: "" });
   };
 
   // Function for handling inputs
@@ -45,6 +47,9 @@ const AddNote = () => {
             name="title"
             aria-describedby="title"
             onChange={onChangeHandler}
+            value={enteredNote.title}
+            minLength={3}
+            required
           />
           <div id="title" className="form-text">
             Title must be atleast 3 characters
@@ -60,6 +65,9 @@ const AddNote = () => {
             rows="5"
             name="description"
             onChange={onChangeHandler}
+            value={enteredNote.description}
+            minLength={8}
+            required
           />
           <div id="title" className="form-text">
             Description must be atleast 8 characters
@@ -77,12 +85,16 @@ const AddNote = () => {
             name="tag"
             aria-describedby="tag"
             onChange={onChangeHandler}
+            value={enteredNote.tag}
           />
         </div>
         <button
           type="submit"
           className="btn btn-primary"
           onClick={addNoteHandler}
+          disabled={
+            enteredNote.title.length < 3 || enteredNote.description.length < 8
+          }
         >
           Add Note
         </button>

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import NoteContext from "./context/notes/noteContext";
 import NoteItem from "./NoteItem";
 import Spinner from "./Spinner";
@@ -9,9 +10,15 @@ const AllNotes = () => {
   const ref = useRef(null);
   const refClose = useRef(null);
 
+  const navigate = useNavigate();
+
   // Function for loading notes from DB
   useEffect(() => {
-    getAllNotes();
+    if (localStorage.getItem("token")) {
+      getAllNotes();
+    } else {
+      navigate("/login");
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -96,7 +103,8 @@ const AllNotes = () => {
                     name="etitle"
                     value={enteredNote.etitle}
                     onChange={onChangeHandler}
-                    minLength="3"
+                    minLength={3}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -109,7 +117,8 @@ const AllNotes = () => {
                     name="edescription"
                     value={enteredNote.edescription}
                     onChange={onChangeHandler}
-                    minLength="8"
+                    minLength={8}
+                    required
                   ></textarea>
                 </div>
                 <div className="mb-3">
@@ -140,6 +149,10 @@ const AllNotes = () => {
                 type="button"
                 className="btn btn-primary"
                 onClick={updateNoteHandler}
+                disabled={
+                  enteredNote.etitle.length < 3 ||
+                  enteredNote.edescription.length < 8
+                }
               >
                 Update
               </button>

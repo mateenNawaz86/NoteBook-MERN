@@ -29,19 +29,23 @@ router.post(
   ],
 
   async (req, res) => {
+    let success = false;
     // if there are error, send bad request with an error
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      success = false;
+      return res.status(400).json({ success, errors: errors.array() });
     }
 
     try {
       // check whether the user exist with the same email address
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-        return res
-          .status(400)
-          .json({ error: "User already exist with the same email address!" });
+        success = false;
+        return res.status(400).json({
+          success,
+          error: "User already exist with the same email address!",
+        });
       }
 
       // Generate a hash+salt  scure password
@@ -63,7 +67,8 @@ router.post(
 
       // assign token to user
       const authicationToken = jwt.sign(userData, JWT_SECRET);
-      res.json({ authicationToken });
+      success = true;
+      res.json({ success, authicationToken });
       //res.json(user);
     } catch (error) {
       console.error(error);
@@ -83,10 +88,12 @@ router.post(
   ],
 
   async (req, res) => {
+    let success = false;
     // if there are error, send bad request with an error
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      success = false;
+      return res.status(400).json({ success, errors: errors.array() });
     }
 
     // getting email & psw from req.body using object Destructuring
@@ -96,17 +103,21 @@ router.post(
       // check whether the user exist with the same email address
       let user = await User.findOne({ email });
       if (!user) {
-        return res
-          .status(400)
-          .json({ errors: "Please try to login with correct credentials!" });
+        success = false;
+        return res.status(400).json({
+          success,
+          errors: "Please try to login with correct credentials!",
+        });
       }
 
       // compare password with existing user psw hashes
       const pswCompare = await bcrypt.compare(password, user.password);
       if (!pswCompare) {
-        return res
-          .status(400)
-          .json({ errors: "Please try to login with correct credentials!" });
+        success = false;
+        return res.status(400).json({
+          success,
+          errors: "Please try to login with correct credentials!",
+        });
       }
 
       const payload = {
@@ -117,7 +128,8 @@ router.post(
 
       // assign token to user
       const authicationToken = jwt.sign(payload, JWT_SECRET);
-      res.json({ authicationToken });
+      success = true;
+      res.json({ success, authicationToken });
     } catch (error) {
       console.error(error);
       console.log("Internal server error");
@@ -127,11 +139,12 @@ router.post(
 
 // Route 3: Get loggedin user details using : 'POST' /api/auth/getuser --> login required
 router.post("/getuser", userDetail, async (req, res) => {
+  success = true;
   try {
     // getting user id from req.body
     const userId = req.user.id;
     const userDetail = await User.findById(userId).select("-password");
-    res.send(userDetail);
+    res.send(success, userDetail);
   } catch (error) {
     console.error(error);
     console.log("Internal server error");
